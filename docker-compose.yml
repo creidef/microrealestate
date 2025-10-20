@@ -35,7 +35,7 @@ services:
       - net
       
   ###############################################################################
-  # Gateway - Main Entry Point (Coolify will proxy to this)
+  # Gateway - Main Entry Point (Traefik will proxy to this)
   ###############################################################################
   gateway:
     restart: unless-stopped
@@ -60,6 +60,15 @@ services:
       - '8080'
     networks:
       - net
+      - coolify
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mre-gateway.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.mre-gateway.entrypoints=https
+      - traefik.http.routers.mre-gateway.tls=true
+      - traefik.http.routers.mre-gateway.tls.certresolver=letsencrypt
+      - traefik.http.services.mre-gateway.loadbalancer.server.port=8080
+      - traefik.docker.network=coolify
     depends_on:
       authenticator:
         condition: service_started
@@ -276,3 +285,5 @@ services:
 networks:
   net:
     driver: bridge
+  coolify:
+    external: true
