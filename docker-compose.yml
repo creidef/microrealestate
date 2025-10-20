@@ -63,7 +63,7 @@ services:
       - coolify
     labels:
       - traefik.enable=true
-      - traefik.http.routers.mre-gateway.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.mre-gateway.rule=Host(`immo.faessler.dev`)
       - traefik.http.routers.mre-gateway.entrypoints=https
       - traefik.http.routers.mre-gateway.tls=true
       - traefik.http.routers.mre-gateway.tls.certresolver=letsencrypt
